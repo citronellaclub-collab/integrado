@@ -1,96 +1,49 @@
-/* =========================================================
-   app.js
-   Núcleo de la aplicación Cultivo Virtual
-   - Maneja login simple
-   - Carga dinámica de secciones
-   - Controla navegación por sidebar
-========================================================= */
+/* ===============================
+   CULTIVO VIRTUAL – APP CORE
+   =============================== */
 
-/* ---------- CONFIGURACIÓN ---------- */
-
-const APP = {
-  defaultPage: "dashboard.html",
-  pages: {
-    dashboard: "dashboard.html",
-    foro: "foro.html",
-    gtl: "gtl.html",
-    micultivo: "micultivo.html",
-    pedidos: "pedidos.html",
-    novedades: "novedades.html",
-    perfil: "perfil.html",
-    ayuda: "ayuda.html"
+/* ====== CONTROL DE SESIÓN ====== */
+(function checkLogin() {
+  if (!localStorage.getItem("cv_logged")) {
+    // Evita loop si ya estamos en login
+    if (!location.pathname.endsWith("login.html")) {
+      window.location.href = "login.html";
+    }
   }
-};
+})();
 
-/* ---------- ESTADO ---------- */
+/* ====== LOGOUT ====== */
+function cvLogout() {
+  localStorage.removeItem("cv_logged");
+  localStorage.removeItem("cv_user");
+  window.location.href = "login.html";
+}
 
-const state = {
-  logged: localStorage.getItem("cv_logged") === "true"
-};
-
-/* ---------- INICIO ---------- */
-
+/* ====== CARGA DE PÁGINAS ====== */
 document.addEventListener("DOMContentLoaded", () => {
-  if (isLoginPage()) return;
+  const buttons = document.querySelectorAll(".sidebar button[data-page]");
+  const content = document.getElementById("app-content");
 
-  if (!state.logged) {
-    redirectToLogin();
+  if (!content) {
+    console.error("No se encontró #app-content");
     return;
   }
 
-  initSidebar();
-  loadPage(APP.defaultPage);
-});
+  // Cargar dashboard por defecto
+  loadPage("dashboard.html");
 
-/* ---------- LOGIN ---------- */
-
-function login() {
-  // Login libre (demo)
-  localStorage.setItem("cv_logged", "true");
-  window.location.href = "index.html";
-}
-
-function logout() {
-  localStorage.removeItem("cv_logged");
-  window.location.href = "login.html";
-}
-
-function redirectToLogin() {
-  window.location.href = "login.html";
-}
-
-function isLoginPage() {
-  return window.location.pathname.includes("login.html");
-}
-
-/* ---------- SIDEBAR ---------- */
-
-function initSidebar() {
-  document.querySelectorAll("[data-page]").forEach(btn => {
+  buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-      const page = btn.getAttribute("data-page");
-      loadPage(page);
-      setActive(btn);
+      buttons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      loadPage(btn.dataset.page);
     });
   });
-}
+});
 
-function setActive(activeBtn) {
-  document.querySelectorAll("[data-page]").forEach(btn => {
-    btn.classList.remove("active");
-  });
-  activeBtn.classList.add("active");
-}
-
-/* ---------- CARGA DE SECCIONES ---------- */
-
+/* ====== FUNCIÓN DE CARGA ====== */
 function loadPage(page) {
-  const container = document.getElementById("app-content");
-
-  if (!container) {
-    console.error("❌ Falta el contenedor #app-content en index.html");
-    return;
-  }
+  const content = document.getElementById("app-content");
 
   fetch(page)
     .then(res => {
@@ -98,45 +51,53 @@ function loadPage(page) {
       return res.text();
     })
     .then(html => {
-      container.innerHTML = html;
-      loadPageScript(page);
+      content.innerHTML = html;
+
+      // Inicializadores por página
+      initPage(page);
     })
     .catch(err => {
-      container.innerHTML = `
-        <div style="padding:20px;color:red">
-          Error cargando la sección.<br>${err.message}
-        </div>`;
+      content.innerHTML = `
+        <h2>Error</h2>
+        <p>No se pudo cargar la sección.</p>
+        <pre>${err.message}</pre>
+      `;
     });
 }
 
-/* ---------- JS ASOCIADOS A CADA HTML ---------- */
+/* ====== INICIALIZADORES ====== */
+function initPage(page) {
+  switch (page) {
+    case "dashboard.html":
+      if (typeof initDashboard === "function") initDashboard();
+      break;
 
-function loadPageScript(page) {
-  const scripts = {
-    "dashboard.html": "dashboard.js",
-    "foro.html": "foro.js",
-    "gtl.html": "catalogo.js",
-    "micultivo.html": "micultivo.js",
-    "pedidos.html": "pedidos.js",
-    "novedades.html": "novedades.js",
-    "perfil.html": "perfil.js"
-  };
+    case "foro.html":
+      if (typeof initForo === "function") initForo();
+      break;
 
-  const src = scripts[page];
-  if (!src) return;
+    case "gtl.html":
+      if (typeof initGTL === "function") initGTL();
+      break;
 
-  const old = document.getElementById("page-script");
-  if (old) old.remove();
+    case "micultivo.html":
+      if (typeof initMiCultivo === "function") initMiCultivo();
+      break;
 
-  const s = document.createElement("script");
-  s.src = src;
-  s.id = "page-script";
-  s.defer = true;
-  document.body.appendChild(s);
+    case "pedidos.html":
+      if (typeof initPedidos === "function") initPedidos();
+      break;
+
+    case "novedades.html":
+      if (typeof initNovedades === "function") initNovedades();
+      break;
+
+    case "perfil.html":
+      if (typeof initPerfil === "function") initPerfil();
+      break;
+
+    default:
+      // páginas simples (ayuda, términos, etc.)
+      break;
+  }
 }
-
-/* ---------- EXPONER FUNCIONES GLOBALES ---------- */
-
-window.cvLogin = login;
-window.cvLogout = logout;
-window.cvLoad = loadPage;
