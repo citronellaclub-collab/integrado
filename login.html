@@ -1,83 +1,123 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Acceso</title>
+  <meta charset="UTF-8" />
+  <title>Ingreso – Cultivo Virtual</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-body{
-  margin:0;
-  font-family:system-ui, sans-serif;
-  background:#0f1115;
-  color:#e5e7eb;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:100vh;
-}
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: system-ui, Arial, sans-serif;
+      background: #0f1f17;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #eaffea;
+    }
 
-.login-box{
-  background:#111827;
-  border:1px solid #1f2937;
-  border-radius:12px;
-  padding:28px;
-  width:320px;
-}
+    .login-box {
+      background: #1b4332;
+      padding: 32px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    }
 
-h1{
-  margin-top:0;
-  font-size:20px;
-  text-align:center;
-}
+    .login-box h1 {
+      margin: 0 0 8px;
+      text-align: center;
+    }
 
-p{
-  font-size:13px;
-  color:#9ca3af;
-  text-align:center;
-}
+    .login-box p {
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
 
-input{
-  width:100%;
-  padding:10px;
-  margin-bottom:12px;
-  background:#0f1115;
-  border:1px solid #1f2937;
-  color:#e5e7eb;
-  border-radius:6px;
-}
+    label {
+      font-size: 14px;
+      display: block;
+      margin-top: 12px;
+    }
 
-button{
-  width:100%;
-  padding:10px;
-  background:#2563eb;
-  border:none;
-  border-radius:6px;
-  color:white;
-  cursor:pointer;
-}
-</style>
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 4px;
+      border-radius: 8px;
+      border: none;
+      background: #081c15;
+      color: #eaffea;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background: #52b788;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      color: #081c15;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #74c69d;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 18px;
+      opacity: 0.7;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="login-box">
-  <h1>Acceso al sistema</h1>
-  <p>Versión de prueba · acceso libre</p>
+  <div class="login-box">
+    <h1>🌱 Cultivo Virtual</h1>
+    <p>Acceso interno del club</p>
 
-  <input id="user" placeholder="Usuario">
-  <input id="pass" type="password" placeholder="Contraseña">
+    <label>Usuario</label>
+    <input type="text" id="user" placeholder="Nombre de usuario">
 
-  <button onclick="login()">Ingresar</button>
-</div>
+    <label>Contraseña</label>
+    <input type="password" id="pass" placeholder="Contraseña">
 
-<script>
-function login(){
-  const u = document.getElementById("user").value || "usuario_demo";
-  localStorage.setItem("session_user", u);
-  localStorage.setItem("session_login", Date.now());
-  location.href = "index.html";
-}
-</script>
+    <button onclick="login()">Entrar</button>
+
+    <div class="footer">
+      Plataforma privada – acceso otorgado por el club
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const user = document.getElementById("user").value.trim();
+      const pass = document.getElementById("pass").value.trim();
+
+      if (!user || !pass) {
+        alert("Ingresá usuario y contraseña");
+        return;
+      }
+
+      // Guardamos sesión (simulada)
+      localStorage.setItem("cv_logged", "true");
+      localStorage.setItem("cv_user", user);
+
+      // Redirige al index
+      window.location.href = "index.html";
+    }
+  </script>
 
 </body>
 </html>
+
