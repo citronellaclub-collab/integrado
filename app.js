@@ -2,16 +2,6 @@
    CULTIVO VIRTUAL – APP CORE
    =============================== */
 
-/* ====== CONTROL DE SESIÓN ====== */
-(function checkLogin() {
-  if (!localStorage.getItem("cv_logged")) {
-    // Evita loop si ya estamos en login
-    if (!location.pathname.endsWith("login.html")) {
-      window.location.href = "login.html";
-    }
-  }
-})();
-
 /* ====== LOGOUT ====== */
 function cvLogout() {
   localStorage.removeItem("cv_logged");
@@ -19,8 +9,14 @@ function cvLogout() {
   window.location.href = "login.html";
 }
 
-/* ====== CARGA DE PÁGINAS ====== */
+/* ====== INICIO APP ====== */
 document.addEventListener("DOMContentLoaded", () => {
+  // 🔐 PROTECCIÓN SOLO EN INDEX
+  if (!localStorage.getItem("cv_logged")) {
+    window.location.href = "login.html";
+    return;
+  }
+
   const buttons = document.querySelectorAll(".sidebar button[data-page]");
   const content = document.getElementById("app-content");
 
@@ -30,18 +26,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Cargar dashboard por defecto
-  loadPage("dashboard.html");
+  loadPage("pages/dashboard.html");
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
       buttons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      loadPage(btn.dataset.page);
+      loadPage("pages/" + btn.dataset.page);
     });
   });
 });
 
-/* ====== FUNCIÓN DE CARGA ====== */
+/* ====== CARGA DE PÁGINAS ====== */
 function loadPage(page) {
   const content = document.getElementById("app-content");
 
@@ -52,14 +48,12 @@ function loadPage(page) {
     })
     .then(html => {
       content.innerHTML = html;
-
-      // Inicializadores por página
       initPage(page);
     })
     .catch(err => {
       content.innerHTML = `
-        <h2>Error</h2>
-        <p>No se pudo cargar la sección.</p>
+        <h2>Error cargando sección</h2>
+        <p>${page}</p>
         <pre>${err.message}</pre>
       `;
     });
@@ -68,36 +62,26 @@ function loadPage(page) {
 /* ====== INICIALIZADORES ====== */
 function initPage(page) {
   switch (page) {
-    case "dashboard.html":
-      if (typeof initDashboard === "function") initDashboard();
+    case "pages/dashboard.html":
+      if (window.initDashboard) initDashboard();
       break;
-
-    case "foro.html":
-      if (typeof initForo === "function") initForo();
+    case "pages/foro.html":
+      if (window.initForo) initForo();
       break;
-
-    case "gtl.html":
-      if (typeof initGTL === "function") initGTL();
+    case "pages/gtl.html":
+      if (window.initGTL) initGTL();
       break;
-
-    case "micultivo.html":
-      if (typeof initMiCultivo === "function") initMiCultivo();
+    case "pages/micultivo.html":
+      if (window.initMiCultivo) initMiCultivo();
       break;
-
-    case "pedidos.html":
-      if (typeof initPedidos === "function") initPedidos();
+    case "pages/pedidos.html":
+      if (window.initPedidos) initPedidos();
       break;
-
-    case "novedades.html":
-      if (typeof initNovedades === "function") initNovedades();
+    case "pages/novedades.html":
+      if (window.initNovedades) initNovedades();
       break;
-
-    case "perfil.html":
-      if (typeof initPerfil === "function") initPerfil();
-      break;
-
-    default:
-      // páginas simples (ayuda, términos, etc.)
+    case "pages/perfil.html":
+      if (window.initPerfil) initPerfil();
       break;
   }
 }
