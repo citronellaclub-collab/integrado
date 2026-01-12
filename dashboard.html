@@ -5,85 +5,50 @@
   <title>Dashboard | Cultivo Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Estilos básicos inline (luego podés mover a CSS) -->
+  <!-- CSS general -->
+  <link rel="stylesheet" href="style.css">
+
   <style>
     body {
       margin: 0;
-      font-family: system-ui, Arial, sans-serif;
-      background: #0f1f17;
-      color: #eaffea;
+      font-family: system-ui, sans-serif;
+      background: #0f1115;
+      color: #e5e7eb;
       display: flex;
-      min-height: 100vh;
     }
 
-    /* Sidebar */
-    aside {
-      width: 230px;
-      background: #081c15;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    aside h2 {
-      margin-top: 0;
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-
-    aside a {
-      display: block;
-      padding: 10px 12px;
-      margin-bottom: 10px;
-      background: #1b4332;
-      color: #eaffea;
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    aside a:hover {
-      background: #2d6a4f;
-    }
-
-    aside .logout {
-      margin-top: 20px;
-      background: #9b2226;
-      text-align: center;
-    }
-
-    /* Main */
     main {
+      padding: 24px;
       flex: 1;
-      padding: 30px;
-      box-sizing: border-box;
     }
 
     h1 {
       margin-top: 0;
-      font-size: 32px;
     }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
+      gap: 16px;
+      margin-top: 20px;
     }
 
     .card {
-      background: #1b4332;
-      padding: 20px;
-      border-radius: 10px;
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 16px;
     }
 
     .card h3 {
-      margin-top: 0;
-      font-size: 18px;
+      margin: 0 0 8px;
+      font-size: 16px;
     }
 
     .card p {
+      margin: 0;
       font-size: 14px;
-      line-height: 1.4;
+      color: #9ca3af;
     }
   </style>
 </head>
@@ -91,48 +56,63 @@
 <body>
 
   <!-- SIDEBAR -->
-  <aside>
-    <h2>🌱 Cultivo Virtual</h2>
+  <div id="sidebar-container"></div>
 
-    <a href="dashboard.html">🏠 Dashboard</a>
-    <a href="foro.html">💬 Foro</a>
-    <a href="gtl.html">🌐 GTL</a>
-    <a href="micultivo.html">🪴 Mi Cultivo</a>
-    <a href="pedidos.html">📦 Pedidos</a>
-    <a href="novedades.html">📰 Novedades</a>
-    <a href="perfil.html">👤 Perfil</a>
-    <a href="ayuda.html">❓ Ayuda</a>
-
-    <a href="index.html" class="logout">🚪 Cerrar sesión</a>
-  </aside>
-
-  <!-- CONTENIDO PRINCIPAL -->
+  <!-- CONTENIDO -->
   <main>
-    <h1>Panel principal</h1>
-    <p>Bienvenido al sistema interno del club cannábico.</p>
+    <h1>📊 Dashboard</h1>
+    <p>Resumen general del estado del club.</p>
 
-    <div class="cards">
+    <section class="cards">
       <div class="card">
-        <h3>🪴 Estado de cultivos</h3>
-        <p>Revisá y gestioná el estado general de los cultivos activos del club.</p>
+        <h3>🪴 Cultivos activos</h3>
+        <p id="cultivosActivos">Cargando…</p>
       </div>
 
       <div class="card">
-        <h3>📦 Pedidos</h3>
-        <p>Seguimiento de pedidos internos y solicitudes de socios.</p>
+        <h3>📦 Pedidos pendientes</h3>
+        <p id="pedidosPendientes">Cargando…</p>
       </div>
 
       <div class="card">
-        <h3>📰 Novedades</h3>
-        <p>Últimas comunicaciones, avisos y actualizaciones del club.</p>
+        <h3>🌍 Publicaciones GTL</h3>
+        <p id="publicacionesGTL">Cargando…</p>
       </div>
 
       <div class="card">
-        <h3>💬 Foro</h3>
-        <p>Espacio de intercambio académico y técnico entre miembros.</p>
+        <h3>💬 Actividad en foro</h3>
+        <p id="actividadForo">Cargando…</p>
       </div>
-    </div>
+    </section>
   </main>
+
+  <!-- APP JS -->
+  <script src="app.js"></script>
+
+  <!-- CARGA SIDEBAR -->
+  <script>
+    fetch("sidebar.html")
+      .then(res => {
+        if (!res.ok) throw new Error("Sidebar no encontrada");
+        return res.text();
+      })
+      .then(html => {
+        document.getElementById("sidebar-container").innerHTML = html;
+      })
+      .catch(err => {
+        document.getElementById("sidebar-container").innerHTML =
+          "<p style='padding:16px;color:red'>Error cargando sidebar</p>";
+        console.error(err);
+      });
+  </script>
+
+  <!-- DATOS SIMULADOS -->
+  <script>
+    document.getElementById("cultivosActivos").textContent = "9 baldes activos";
+    document.getElementById("pedidosPendientes").textContent = "2 pedidos";
+    document.getElementById("publicacionesGTL").textContent = "5 items publicados";
+    document.getElementById("actividadForo").textContent = "3 temas recientes";
+  </script>
 
 </body>
 </html>
