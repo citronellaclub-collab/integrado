@@ -2,51 +2,107 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Cultivo Virtual</title>
-
-  <!-- Responsive -->
+  <title>Club Cannábico – Plataforma</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Estilos -->
-  <link rel="stylesheet" href="css/styles.css">
+  <!-- JS BASE (orden importante) -->
+  <script src="js/state.js" defer></script>
+  <script src="js/sidebar.js" defer></script>
+  <script src="js/app.js" defer></script>
 </head>
 
 <body>
 
-  <!-- Layout principal -->
-  <div class="layout">
+<!-- ================= LOGIN ================= -->
+<div id="loginView">
+  <h2>Ingreso al sistema</h2>
 
-    <!-- Barra lateral -->
-    <aside class="sidebar">
+  <input id="loginUser" placeholder="Usuario">
+  <br><br>
+  <input id="loginPass" type="password" placeholder="Contraseña">
+  <br><br>
+  <button onclick="login()">Ingresar</button>
+</div>
 
-      <div class="sidebar-header">
-        <h1>CV</h1>
-      </div>
+<!-- ================= APP PRINCIPAL ================= -->
+<div id="app" style="display:none;">
 
-      <!-- Menú dinámico -->
-      <nav id="sidebarMenu" class="sidebar-menu">
-        <!-- Botones cargados por sidebar.js -->
-      </nav>
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <h3>Menú</h3>
+    <button onclick="navigate('dashboard')">Dashboard</button>
+    <button onclick="navigate('gtl')">GTL</button>
+    <button onclick="navigate('pedidos')">Pedidos</button>
+    <button onclick="navigate('licitaciones')">Licitaciones</button>
+    <button onclick="navigate('publicar')">Publicar</button>
+    <button onclick="navigate('micultivo')">Mi Cultivo</button>
+    <button onclick="navigate('foro')">Foro</button>
+    <button onclick="navigate('novedades')">Novedades</button>
+    <button onclick="navigate('perfil')">Perfil</button>
+    <button onclick="navigate('ayuda')">Ayuda</button>
+    <button onclick="logout()">Salir</button>
+  </aside>
 
-    </aside>
+  <!-- CONTENIDO DINÁMICO -->
+  <main id="content">
+    <p>Cargando...</p>
+  </main>
 
-    <!-- Contenido principal -->
-    <main id="mainContent" class="main-content">
+</div>
 
-      <section class="home">
-        <h2>Bienvenido a Cultivo Virtual</h2>
-        <p>
-          Seleccioná una opción del menú para comenzar.
-        </p>
-      </section>
+<!-- ================= LÓGICA BÁSICA INDEX ================= -->
+<script>
+/* ===== LOGIN SIMPLE ===== */
+function login() {
+  const user = document.getElementById("loginUser").value;
+  if (!user) {
+    alert("Ingrese un usuario");
+    return;
+  }
 
-    </main>
+  localStorage.setItem("logged", "true");
+  localStorage.setItem("user", user);
 
-  </div>
+  showApp();
+}
 
-  <!-- Scripts -->
-  <script src="js/sidebar.js"></script>
-  <script src="js/app.js"></script>
+/* ===== LOGOUT ===== */
+function logout() {
+  localStorage.removeItem("logged");
+  localStorage.removeItem("user");
+  location.reload();
+}
+
+/* ===== MOSTRAR APP ===== */
+function showApp() {
+  document.getElementById("loginView").style.display = "none";
+  document.getElementById("app").style.display = "flex";
+  navigate("dashboard");
+}
+
+/* ===== NAVEGACIÓN ===== */
+function navigate(page) {
+  fetch(`pages/${page}.html`)
+    .then(r => {
+      if (!r.ok) throw new Error("No se pudo cargar " + page);
+      return r.text();
+    })
+    .then(html => {
+      document.getElementById("content").innerHTML = html;
+    })
+    .catch(err => {
+      document.getElementById("content").innerHTML =
+        "<p>Error cargando la sección.</p>";
+      console.error(err);
+    });
+}
+
+/* ===== AUTO LOGIN ===== */
+if (localStorage.getItem("logged") === "true") {
+  showApp();
+}
+</script>
 
 </body>
 </html>
+
