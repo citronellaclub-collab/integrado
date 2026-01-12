@@ -39,7 +39,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ====== CARGA DE PÁGINAS ====== */
 function loadPage(page) {
-  const content = document.getElementById("app-content");
+  const content = document.getElementById("content");
+  if (!content) return;
+
+  // Detecta si estamos en /integrado/
+  const basePath = window.location.pathname.endsWith("/")
+    ? window.location.pathname
+    : window.location.pathname + "/";
+
+  fetch(basePath + page)
+    .then(res => {
+      if (!res.ok) throw new Error("404");
+      return res.text();
+    })
+    .then(html => {
+      content.innerHTML = html;
+      window.scrollTo(0, 0);
+    })
+    .catch(() => {
+      content.innerHTML = `
+        <div style="padding:20px">
+          <h2>404 – Sección no encontrada</h2>
+          <p>No se pudo cargar <strong>${page}</strong></p>
+        </div>
+      `;
+    });
+}
+
 
   fetch(page)
     .then(res => {
@@ -85,4 +111,5 @@ function initPage(page) {
       break;
   }
 }
+
 
