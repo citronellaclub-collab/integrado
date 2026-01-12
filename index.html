@@ -2,108 +2,124 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Club Cannábico – Plataforma</title>
+  <title>Cultivo Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- JS BASE (orden importante) -->
-  <script src="js/state.js" defer></script>
-  <script src="js/sidebar.js" defer></script>
-  <script src="js/app.js" defer></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      font-family: system-ui, Arial, sans-serif;
+      background: #0f1f17;
+      color: #eaffea;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 230px;
+      background: #081c15;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-right: 1px solid #1b4332;
+    }
+
+    .sidebar h2 {
+      margin: 0 0 12px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .sidebar button {
+      padding: 10px;
+      background: transparent;
+      border: 1px solid #40916c;
+      color: #eaffea;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .sidebar button:hover {
+      background: #1b4332;
+    }
+
+    .sidebar button.active {
+      background: #40916c;
+      color: #081c15;
+      font-weight: bold;
+    }
+
+    .sidebar .logout {
+      margin-top: auto;
+      border-color: #9b2226;
+      color: #ffccd5;
+    }
+
+    /* CONTENIDO */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      padding: 16px;
+      background: #1b4332;
+      border-bottom: 1px solid #40916c;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    #app-content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- ================= LOGIN ================= -->
-<div id="loginView">
-  <h2>Ingreso al sistema</h2>
-
-  <input id="loginUser" placeholder="Usuario">
-  <br><br>
-  <input id="loginPass" type="password" placeholder="Contraseña">
-  <br><br>
-  <button onclick="login()">Ingresar</button>
-</div>
-
-<!-- ================= APP PRINCIPAL ================= -->
-<div id="app" style="display:none;">
-
   <!-- SIDEBAR -->
-  <aside id="sidebar">
-    <h3>Menú</h3>
-    <button onclick="navigate('dashboard')">Dashboard</button>
-    <button onclick="navigate('gtl')">GTL</button>
-    <button onclick="navigate('pedidos')">Pedidos</button>
-    <button onclick="navigate('licitaciones')">Licitaciones</button>
-    <button onclick="navigate('publicar')">Publicar</button>
-    <button onclick="navigate('micultivo')">Mi Cultivo</button>
-    <button onclick="navigate('foro')">Foro</button>
-    <button onclick="navigate('novedades')">Novedades</button>
-    <button onclick="navigate('perfil')">Perfil</button>
-    <button onclick="navigate('ayuda')">Ayuda</button>
-    <button onclick="logout()">Salir</button>
+  <aside class="sidebar">
+    <h2>🌱 Cultivo Virtual</h2>
+
+    <button data-page="dashboard.html" class="active">🏠 Dashboard</button>
+    <button data-page="foro.html">📘 Foro</button>
+    <button data-page="gtl.html">🌐 GTL</button>
+    <button data-page="micultivo.html">🪴 Mi Cultivo</button>
+    <button data-page="pedidos.html">📦 Pedidos</button>
+    <button data-page="novedades.html">📰 Novedades</button>
+    <button data-page="perfil.html">👤 Perfil</button>
+    <button data-page="ayuda.html">❓ Ayuda</button>
+
+    <button class="logout" onclick="cvLogout()">🚪 Cerrar sesión</button>
   </aside>
 
-  <!-- CONTENIDO DINÁMICO -->
-  <main id="content">
-    <p>Cargando...</p>
-  </main>
+  <!-- CONTENIDO PRINCIPAL -->
+  <section class="main">
+    <div class="header">
+      <h1>Panel principal</h1>
+    </div>
 
-</div>
+    <div id="app-content">
+      <!-- Aquí se cargan las páginas -->
+    </div>
+  </section>
 
-<!-- ================= LÓGICA BÁSICA INDEX ================= -->
-<script>
-/* ===== LOGIN SIMPLE ===== */
-function login() {
-  const user = document.getElementById("loginUser").value;
-  if (!user) {
-    alert("Ingrese un usuario");
-    return;
-  }
-
-  localStorage.setItem("logged", "true");
-  localStorage.setItem("user", user);
-
-  showApp();
-}
-
-/* ===== LOGOUT ===== */
-function logout() {
-  localStorage.removeItem("logged");
-  localStorage.removeItem("user");
-  location.reload();
-}
-
-/* ===== MOSTRAR APP ===== */
-function showApp() {
-  document.getElementById("loginView").style.display = "none";
-  document.getElementById("app").style.display = "flex";
-  navigate("dashboard");
-}
-
-/* ===== NAVEGACIÓN ===== */
-function navigate(page) {
-  fetch(`pages/${page}.html`)
-    .then(r => {
-      if (!r.ok) throw new Error("No se pudo cargar " + page);
-      return r.text();
-    })
-    .then(html => {
-      document.getElementById("content").innerHTML = html;
-    })
-    .catch(err => {
-      document.getElementById("content").innerHTML =
-        "<p>Error cargando la sección.</p>";
-      console.error(err);
-    });
-}
-
-/* ===== AUTO LOGIN ===== */
-if (localStorage.getItem("logged") === "true") {
-  showApp();
-}
-</script>
+  <!-- APP -->
+  <script src="app.js"></script>
 
 </body>
 </html>
-
-
