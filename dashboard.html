@@ -1,47 +1,40 @@
-<section id="dashboard">
+<section style="padding:20px">
 
-  <h1>🌱 Cultivo Virtual</h1>
+  <h1>📊 Dashboard</h1>
 
   <p>
-    Bienvenido al panel principal del sistema.
-    Desde aquí podés acceder a todas las funciones del club.
+    Bienvenido al panel principal de <strong>Cultivo Virtual</strong>.
+    Desde aquí podés acceder a todas las funciones del sistema.
   </p>
 
-  <div class="dashboard-grid">
+  <hr>
 
-    <div class="card" onclick="navigate('micultivo')">
-      <h3>🪴 Mi Cultivo</h3>
-      <p>Registro y seguimiento de plantas</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+
+    <div style="background:#1e293b;padding:16px;border-radius:10px">
+      <h3>🌱 Mi Cultivo</h3>
+      <p>Gestión y seguimiento de cultivos.</p>
+      <button onclick="go('micultivo.html')">Abrir</button>
     </div>
 
-    <div class="card" onclick="navigate('gtl')">
-      <h3>🌍 GTL</h3>
-      <p>Catálogo e intercambio de items</p>
+    <div style="background:#1e293b;padding:16px;border-radius:10px">
+      <h3>🧪 GTL</h3>
+      <p>Comercio interno del club.</p>
+      <button onclick="go('gtl.html')">Abrir</button>
     </div>
 
-    <div class="card" onclick="navigate('pedidos')">
-      <h3>📦 Pedidos</h3>
-      <p>Carrito y solicitudes</p>
-    </div>
-
-    <div class="card" onclick="navigate('foro')">
+    <div style="background:#1e293b;padding:16px;border-radius:10px">
       <h3>💬 Foro</h3>
-      <p>Debate y contenido comunitario</p>
+      <p>Comunidad y debates.</p>
+      <button onclick="go('foro.html')">Abrir</button>
     </div>
 
-    <div class="card" onclick="navigate('perfil')">
-      <h3>👤 Perfil</h3>
-      <p>Datos del usuario</p>
+    <div style="background:#1e293b;padding:16px;border-radius:10px">
+      <h3>📦 Pedidos</h3>
+      <p>Historial y solicitudes.</p>
+      <button onclick="go('pedidos.html')">Abrir</button>
     </div>
 
   </div>
 
 </section>
-
-<!-- JS ESPECÍFICO DEL DASHBOARD -->
-<script src="../js/dashboard.js"></script>
-
-
-</body>
-</html>
-
