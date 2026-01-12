@@ -1,125 +1,266 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Cultivo Virtual</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Cultivo Virtual</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* { box-sizing: border-box; }
 
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      font-family: system-ui, Arial, sans-serif;
-      background: #0f1f17;
-      color: #eaffea;
-    }
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  background: #0f1f17;
+  color: #eaffea;
+  height: 100vh;
+}
 
-    /* SIDEBAR */
-    .sidebar {
-      width: 230px;
-      background: #081c15;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      border-right: 1px solid #1b4332;
-    }
+/* ===== LOGIN ===== */
+#loginView {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .sidebar h2 {
-      margin: 0 0 12px;
-      text-align: center;
-      font-size: 18px;
-    }
+.login-box {
+  background: #1b4332;
+  padding: 32px;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.4);
+}
 
-    .sidebar button {
-      padding: 10px;
-      background: transparent;
-      border: 1px solid #40916c;
-      color: #eaffea;
-      border-radius: 6px;
-      cursor: pointer;
-      text-align: left;
-      font-size: 14px;
-    }
+.login-box h1 {
+  text-align: center;
+  margin: 0 0 8px;
+}
 
-    .sidebar button:hover {
-      background: #1b4332;
-    }
+.login-box p {
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.9;
+}
 
-    .sidebar button.active {
-      background: #40916c;
-      color: #081c15;
-      font-weight: bold;
-    }
+.login-box label {
+  font-size: 14px;
+  margin-top: 12px;
+  display: block;
+}
 
-    .sidebar .logout {
-      margin-top: auto;
-      border-color: #9b2226;
-      color: #ffccd5;
-    }
+.login-box input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border-radius: 8px;
+  border: none;
+  background: #081c15;
+  color: #eaffea;
+}
 
-    /* CONTENIDO */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
+.login-box button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: #52b788;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #081c15;
+}
 
-    .header {
-      padding: 16px;
-      background: #1b4332;
-      border-bottom: 1px solid #40916c;
-    }
+/* ===== APP ===== */
+#appView {
+  display: none;
+  height: 100vh;
+}
 
-    .header h1 {
-      margin: 0;
-      font-size: 20px;
-    }
+.app-layout {
+  display: flex;
+  height: 100%;
+}
 
-    #app-content {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-    }
-  </style>
+/* SIDEBAR */
+.sidebar {
+  width: 230px;
+  background: #081c15;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-right: 1px solid #1b4332;
+}
+
+.sidebar h2 {
+  margin: 0 0 12px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.sidebar button {
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #40916c;
+  color: #eaffea;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+}
+
+.sidebar button:hover {
+  background: #1b4332;
+}
+
+.sidebar button.active {
+  background: #40916c;
+  color: #081c15;
+  font-weight: bold;
+}
+
+.sidebar .logout {
+  margin-top: auto;
+  border-color: #9b2226;
+  color: #ffccd5;
+}
+
+/* CONTENIDO */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 16px;
+  background: #1b4332;
+  border-bottom: 1px solid #40916c;
+}
+
+#app-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h2>🌱 Cultivo Virtual</h2>
+<!-- ===== LOGIN VIEW ===== -->
+<div id="loginView">
+  <div class="login-box">
+    <h1>🌱 Cultivo Virtual</h1>
+    <p>Acceso interno del club</p>
 
-    <button data-page="dashboard.html" class="active">🏠 Dashboard</button>
-    <button data-page="foro.html">📘 Foro</button>
-    <button data-page="gtl.html">🌐 GTL</button>
-    <button data-page="micultivo.html">🪴 Mi Cultivo</button>
-    <button data-page="pedidos.html">📦 Pedidos</button>
-    <button data-page="novedades.html">📰 Novedades</button>
-    <button data-page="perfil.html">👤 Perfil</button>
-    <button data-page="ayuda.html">❓ Ayuda</button>
+    <label>Usuario</label>
+    <input id="loginUser" placeholder="Usuario">
 
-    <button class="logout" onclick="cvLogout()">🚪 Cerrar sesión</button>
-  </aside>
+    <label>Contraseña</label>
+    <input id="loginPass" type="password" placeholder="Contraseña">
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <section class="main">
-    <div class="header">
-      <h1>Panel principal</h1>
-    </div>
+    <button onclick="login()">Entrar</button>
+  </div>
+</div>
 
-    <div id="app-content">
-      <!-- Aquí se cargan las páginas -->
-    </div>
-  </section>
+<!-- ===== APP VIEW ===== -->
+<div id="appView">
+  <div class="app-layout">
 
-  <!-- APP -->
-  <script src="app.js"></script>
+    <aside class="sidebar">
+      <h2>🌱 Cultivo Virtual</h2>
+
+      <button data-page="dashboard.html" class="active">🏠 Dashboard</button>
+      <button data-page="foro.html">📘 Foro</button>
+      <button data-page="gtl.html">🌐 GTL</button>
+      <button data-page="micultivo.html">🪴 Mi Cultivo</button>
+      <button data-page="pedidos.html">📦 Pedidos</button>
+      <button data-page="novedades.html">📰 Novedades</button>
+      <button data-page="perfil.html">👤 Perfil</button>
+      <button data-page="ayuda.html">❓ Ayuda</button>
+
+      <button class="logout" onclick="logout()">🚪 Cerrar sesión</button>
+    </aside>
+
+    <section class="main">
+      <div class="header">
+        <h1>Panel principal</h1>
+      </div>
+
+      <div id="app-content"></div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+/* ===== LOGIN ===== */
+function login() {
+  const u = loginUser.value.trim();
+  const p = loginPass.value.trim();
+  if (!u || !p) {
+    alert("Completá usuario y contraseña");
+    return;
+  }
+  localStorage.setItem("cv_logged", "true");
+  showApp();
+}
+
+function logout() {
+  localStorage.removeItem("cv_logged");
+  location.reload();
+}
+
+/* ===== VIEW CONTROL ===== */
+function showApp() {
+  loginView.style.display = "none";
+  appView.style.display = "block";
+  initApp();
+}
+
+function showLogin() {
+  loginView.style.display = "flex";
+  appView.style.display = "none";
+}
+
+/* ===== APP INIT ===== */
+function initApp() {
+  const buttons = document.querySelectorAll(".sidebar button[data-page]");
+  loadPage("pages/dashboard.html");
+
+  buttons.forEach(btn => {
+    btn.onclick = () => {
+      buttons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      loadPage("pages/" + btn.dataset.page);
+    };
+  });
+}
+
+/* ===== PAGE LOAD ===== */
+function loadPage(page) {
+  fetch(page)
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("app-content").innerHTML = html;
+    })
+    .catch(() => {
+      document.getElementById("app-content").innerHTML =
+        "<h2>Error cargando la sección</h2>";
+    });
+}
+
+/* ===== START ===== */
+if (localStorage.getItem("cv_logged")) {
+  showApp();
+} else {
+  showLogin();
+}
+</script>
 
 </body>
 </html>
