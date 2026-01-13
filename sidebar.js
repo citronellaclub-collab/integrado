@@ -1,11 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const links = document.querySelectorAll(".sidebar a");
-
-  links.forEach(link => {
-    if (link.href === window.location.href) {
-      link.classList.add("active");
-    }
-  });
-});
-
-
+<nav style="width:220px;background:#111827;padding:16px;">
+  <a href="dashboard.html">Dashboard</a><br><br>
+  <a href="foro.html">Foro</a><br><br>
+  <a href="gtl.html">GTL</a><br><br>
+  <a href="micultivo.html">Mi Cultivo</a><br><br>
+</nav>
