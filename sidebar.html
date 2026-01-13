@@ -1,16 +1,77 @@
-<nav class="sidebar">
-  <h2>🌱 Cultivo Virtual</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cultivo Virtual</title>
 
-  <a href="dashboard.html">🏠 Dashboard</a>
-  <a href="foro.html">💬 Foro</a>
-  <a href="gtl.html">🌐 GTL</a>
-  <a href="micultivo.html">🌿 Mi Cultivo</a>
-  <a href="pedidos.html">📦 Pedidos</a>
-  <a href="novedades.html">📰 Novedades</a>
-  <a href="perfil.html">👤 Perfil</a>
-  <a href="ayuda.html">❓ Ayuda</a>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+    }
 
-  <hr>
+    /* SIDEBAR */
+    .sidebar {
+      width: 220px;
+      min-height: 100vh;
+      background: #1f2937;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      transition: width 0.3s, transform 0.3s;
+    }
 
-  <button onclick="logout()">🚪 Cerrar sesión</button>
-</nav>
+    .sidebar h2 {
+      margin: 0 0 1rem;
+      font-size: 1.2rem;
+    }
+
+    .sidebar a,
+    .sidebar button {
+      color: white;
+      text-decoration: none;
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      padding: .4rem 0;
+      font-size: 1rem;
+    }
+
+    .sidebar a:hover,
+    .sidebar button:hover {
+      opacity: 0.8;
+    }
+
+    .sidebar.collapsed {
+      width: 60px;
+    }
+
+    .sidebar.collapsed h2,
+    .sidebar.collapsed a,
+    .sidebar.collapsed hr,
+    .sidebar.collapsed button {
+      display: none;
+    }
+
+    /* BOTÓN TOGGLE */
+    .sidebar-toggle {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 1000;
+      background: #374151;
+      color: white;
+      border: none;
+      padding: .5rem .7rem;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    /* CONTENIDO */
+    .content {
+      fle
+
